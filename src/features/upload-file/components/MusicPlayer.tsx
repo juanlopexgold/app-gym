@@ -22,7 +22,7 @@ export default function MusicPlayer({ playlist, autoPlay = false }: MusicPlayerP
 
   return (
     <div className="space-y-2 sm:space-y-3 text-center">
-      <p className="font-semibold text-xs sm:text-sm break-all">Reproduciendo: {esYouTube ? `YouTube ${actual.slice(3)}` : actual}</p>
+          <p className="font-semibold text-xs sm:text-sm break-all text-slate-800 dark:text-slate-200">Reproduciendo: {esYouTube ? `YouTube ${actual.slice(3)}` : actual}</p>
 
       {esYouTube ? (
         <YouTube

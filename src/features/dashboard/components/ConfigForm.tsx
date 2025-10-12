@@ -84,15 +84,15 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <h3 className="text-base sm:text-lg font-semibold">Configurar Nueva Rutina</h3>
+          <h3 className="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100">Configurar Nueva Rutina</h3>
 
       {/* Lista de fases */}
       {fases.length > 0 && (
         <div className="space-y-2">
-          <h4 className="font-medium text-sm sm:text-base">Fases configuradas:</h4>
+              <h4 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-100">Fases configuradas:</h4>
           {fases.map((fase, index) => (
-            <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-100 p-2 sm:p-3 rounded gap-2">
-              <span className="text-xs sm:text-sm">{fase.nombre} ({fase.ejercicios.length} ejercicios)</span>
+                <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-100 dark:bg-slate-700 p-2 sm:p-3 rounded gap-2">
+                  <span className="text-xs sm:text-sm text-slate-800 dark:text-slate-200">{fase.nombre} ({fase.ejercicios.length} ejercicios)</span>
               <Button
                 onClick={() => quitarFase(index)}
                 variant="outline"
@@ -107,12 +107,12 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
       )}
 
       {/* Configuración de fase actual */}
-      <div className="border rounded p-3 sm:p-4 space-y-3 sm:space-y-4">
-        <h4 className="font-medium text-sm sm:text-base">Configurar Fase</h4>
+          <div className="border rounded p-3 sm:p-4 space-y-3 sm:space-y-4 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+            <h4 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-100">Configurar Fase</h4>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div>
-            <Label htmlFor="nombreFase" className="text-xs sm:text-sm">Nombre de la fase</Label>
+                <Label htmlFor="nombreFase" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">Nombre de la fase</Label>
             <Input
               id="nombreFase"
               value={faseActual.nombre}
@@ -122,7 +122,7 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
             />
           </div>
           <div>
-            <Label htmlFor="series" className="text-xs sm:text-sm">Series</Label>
+                <Label htmlFor="series" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">Series</Label>
             <Input
               id="series"
               type="number"
@@ -136,7 +136,7 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           <div>
-            <Label htmlFor="preparacion" className="text-xs sm:text-sm">Preparación (seg)</Label>
+                <Label htmlFor="preparacion" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">Preparación (seg)</Label>
             <Input
               id="preparacion"
               type="number"
@@ -147,7 +147,7 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
             />
           </div>
           <div>
-            <Label htmlFor="repeticiones" className="text-xs sm:text-sm">Ejercicio (seg)</Label>
+                <Label htmlFor="repeticiones" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">Ejercicio (seg)</Label>
             <Input
               id="repeticiones"
               type="number"
@@ -158,7 +158,7 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
             />
           </div>
           <div>
-            <Label htmlFor="descanso" className="text-xs sm:text-sm">Descanso (seg)</Label>
+                <Label htmlFor="descanso" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">Descanso (seg)</Label>
             <Input
               id="descanso"
               type="number"
@@ -172,11 +172,11 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
 
         {/* Ejercicios de la fase */}
         <div className="space-y-3">
-          <h5 className="font-medium text-sm sm:text-base">Ejercicios de esta fase:</h5>
+              <h5 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-100">Ejercicios de esta fase:</h5>
           
           {faseActual.ejercicios.map((ejercicio, index) => (
-            <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 p-2 rounded gap-2">
-              <span className="text-xs sm:text-sm">{ejercicio.numeroEjercicio}. {ejercicio.nombre}</span>
+                <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 dark:bg-slate-700 p-2 rounded gap-2">
+                  <span className="text-xs sm:text-sm text-slate-800 dark:text-slate-200">{ejercicio.numeroEjercicio}. {ejercicio.nombre}</span>
               <Button
                 onClick={() => quitarEjercicio(index)}
                 variant="outline"
@@ -190,7 +190,7 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <Label htmlFor="nombreEjercicio" className="text-xs sm:text-sm">Nombre del ejercicio</Label>
+                  <Label htmlFor="nombreEjercicio" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">Nombre del ejercicio</Label>
               <Input
                 id="nombreEjercicio"
                 value={ejercicioActual.nombre}
@@ -200,7 +200,7 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
               />
             </div>
             <div>
-              <Label htmlFor="descripcionEjercicio" className="text-xs sm:text-sm">Descripción</Label>
+                  <Label htmlFor="descripcionEjercicio" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">Descripción</Label>
               <Input
                 id="descripcionEjercicio"
                 value={ejercicioActual.descripcion}

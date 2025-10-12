@@ -7,6 +7,6 @@ interface Store {
   // setUser: (user: User | null) => void
 }
 
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store>(() => ({
   // Implementa tu estado aquí
 }))

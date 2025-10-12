@@ -83,7 +83,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
     const subirArchivo = async () => {
         if (!archivo) return
         try {
-            const id = await saveSong(archivo)
+            await saveSong(archivo)
             const url = URL.createObjectURL(archivo)
             setCanciones([...canciones, url])
             setArchivo(null)
@@ -123,17 +123,17 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
 
     return (
         <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-base sm:text-lg font-semibold">🎵 Gestión de Playlists</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100">🎵 Gestión de Playlists</h3>
 
             {/* Lista de playlists existentes */}
             {playlists.length > 0 && (
                 <div className="space-y-2">
-                    <h4 className="font-medium text-sm sm:text-base">Playlists guardadas:</h4>
+                        <h4 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-100">Playlists guardadas:</h4>
                     {playlists.map((playlist, index) => (
-                        <div key={playlist.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-100 p-2 sm:p-3 rounded gap-2">
+                            <div key={playlist.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-100 dark:bg-slate-700 p-2 sm:p-3 rounded gap-2">
                             <div className="flex-1">
-                                <span className="font-medium text-xs sm:text-sm">{playlist.nombre}</span>
-                                <span className="text-xs sm:text-sm text-slate-500 ml-2">({playlist.canciones.length} canciones)</span>
+                                    <span className="font-medium text-xs sm:text-sm text-slate-800 dark:text-slate-200">{playlist.nombre}</span>
+                                    <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 ml-2">({playlist.canciones.length} canciones)</span>
                             </div>
                             <div className="flex flex-wrap gap-1 sm:gap-2 w-full sm:w-auto">
                                 <Button
@@ -167,13 +167,13 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
             )}
 
             {/* Formulario de nueva playlist */}
-            <div className="border rounded p-3 sm:p-4 space-y-3 sm:space-y-4">
-                <h4 className="font-medium text-sm sm:text-base">
-                    {editIndex !== null ? "Editar Playlist" : "Nueva Playlist"}
-                </h4>
+                <div className="border rounded p-3 sm:p-4 space-y-3 sm:space-y-4 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                    <h4 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-100">
+                        {editIndex !== null ? "Editar Playlist" : "Nueva Playlist"}
+                    </h4>
                 
                 <div>
-                    <Label htmlFor="nombre" className="text-xs sm:text-sm">Nombre de la playlist</Label>
+                        <Label htmlFor="nombre" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">Nombre de la playlist</Label>
                     <Input
                         id="nombre"
                         value={nombre}
@@ -185,7 +185,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
 
                 {/* Agregar canción por URL */}
                 <div>
-                    <Label htmlFor="cancion" className="text-xs sm:text-sm">URL de canción (YouTube o archivo de audio)</Label>
+                        <Label htmlFor="cancion" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">URL de canción (YouTube o archivo de audio)</Label>
                     <div className="flex flex-col sm:flex-row gap-2">
                         <Input
                             id="cancion"
@@ -202,7 +202,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
 
                 {/* Subir archivo local */}
                 <div>
-                    <Label htmlFor="archivo" className="text-xs sm:text-sm">O subir archivo de audio</Label>
+                        <Label htmlFor="archivo" className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">O subir archivo de audio</Label>
                     <div className="flex flex-col sm:flex-row gap-2">
                         <Input
                             id="archivo"
@@ -220,12 +220,12 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
                 {/* Lista de canciones */}
                 {canciones.length > 0 && (
                     <div className="space-y-2">
-                        <h5 className="font-medium text-sm sm:text-base">Canciones en la playlist:</h5>
+                            <h5 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-100">Canciones en la playlist:</h5>
                         {canciones.map((cancion, index) => (
-                            <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 p-2 rounded gap-2">
-                                <span className="text-xs sm:text-sm flex-1 break-all">
-                                    {cancion.startsWith("yt:") ? `YouTube: ${cancion.slice(3)}` : cancion}
-                                </span>
+                                <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 dark:bg-slate-700 p-2 rounded gap-2">
+                                    <span className="text-xs sm:text-sm flex-1 break-all text-slate-800 dark:text-slate-200">
+                                        {cancion.startsWith("yt:") ? `YouTube: ${cancion.slice(3)}` : cancion}
+                                    </span>
                                 <Button
                                     onClick={() => quitarCancion(index)}
                                     variant="outline"

@@ -36,13 +36,13 @@ export default function CronometroPage() {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">⏱️ Cronómetro de Entrenamiento</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center text-slate-800 dark:text-slate-100">⏱️ Cronómetro de Entrenamiento</h1>
 
         {modo === "config" ? (
           <>
-            <p className="mb-4 sm:mb-6 text-slate-600 text-center text-sm sm:text-base px-4">
-              Selecciona tu rutina, configura una nueva o añade música para acompañar tu entrenamiento.
-            </p>
+                <p className="mb-4 sm:mb-6 text-slate-600 dark:text-slate-300 text-center text-sm sm:text-base px-4">
+                  Selecciona tu rutina, configura una nueva o añade música para acompañar tu entrenamiento.
+                </p>
 
             {/* Dropdown de rutinas predeterminadas */}
             <div className="mb-3 sm:mb-4">
@@ -54,15 +54,15 @@ export default function CronometroPage() {
                 <span className="ml-2 flex-shrink-0">{mostrarRutinas ? "▲" : "▼"}</span>
               </button>
 
-              {mostrarRutinas && (
-                <div className="mt-2 border rounded p-2 sm:p-3 bg-white shadow space-y-1 sm:space-y-2">
-                  <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 text-xs sm:text-sm" onClick={() => { setRutina(rutinaLunes); setModo("run") }}>Lunes – Pecho + Tríceps</button>
-                  <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 text-xs sm:text-sm" onClick={() => { setRutina(rutinaMartes); setModo("run") }}>Martes – Piernas + Glúteos</button>
-                  <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 text-xs sm:text-sm" onClick={() => { setRutina(rutinaMiercoles); setModo("run") }}>Miércoles – Espalda + Bíceps</button>
-                  <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 text-xs sm:text-sm" onClick={() => { setRutina(rutinaJueves); setModo("run") }}>Jueves – Cardio HIIT + Core</button>
-                  <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 text-xs sm:text-sm" onClick={() => { setRutina(rutinaViernes); setModo("run") }}>Viernes – Brazos intensos</button>
-                  <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 text-xs sm:text-sm" onClick={() => { setRutina(rutinaSabado); setModo("run") }}>Sábado – Piernas + Glúteos</button>
-                  <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 text-xs sm:text-sm" onClick={() => { setRutina(rutinaDomingo); setModo("run") }}>Domingo – Descanso activo</button>
+                  {mostrarRutinas && (
+                    <div className="mt-2 border rounded p-2 sm:p-3 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow space-y-1 sm:space-y-2">
+                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaLunes); setModo("run") }}>Lunes – Pecho + Tríceps</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaMartes); setModo("run") }}>Martes – Piernas + Glúteos</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaMiercoles); setModo("run") }}>Miércoles – Espalda + Bíceps</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaJueves); setModo("run") }}>Jueves – Cardio HIIT + Core</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaViernes); setModo("run") }}>Viernes – Brazos intensos</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaSabado); setModo("run") }}>Sábado – Piernas + Glúteos</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaDomingo); setModo("run") }}>Domingo – Descanso activo</button>
                 </div>
               )}
             </div>
@@ -77,8 +77,8 @@ export default function CronometroPage() {
                 <span className="ml-2 flex-shrink-0">{mostrarForm ? "▲" : "▼"}</span>
               </button>
 
-              {mostrarForm && (
-                <div className="mt-3 sm:mt-4 border rounded p-3 sm:p-4 bg-white shadow">
+                  {mostrarForm && (
+                    <div className="mt-3 sm:mt-4 border rounded p-3 sm:p-4 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow">
                   <ConfigForm
                     onConfigurar={(fases: FaseRutina[]) => {
                       setRutina(fases)
@@ -99,13 +99,13 @@ export default function CronometroPage() {
                 <span className="ml-2 flex-shrink-0">{mostrarPlaylist ? "▲" : "▼"}</span>
               </button>
 
-              {mostrarPlaylist && (
-                <div className="mt-3 sm:mt-4 border rounded p-3 sm:p-4 bg-white shadow">
+                  {mostrarPlaylist && (
+                    <div className="mt-3 sm:mt-4 border rounded p-3 sm:p-4 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow">
                   <PlaylistForm onSelect={(p: Playlist) => setPlaylistActiva(p)} />
                   {playlistActiva && (
-                    <p className="mt-2 text-xs sm:text-sm text-green-600">
-                      ✅ Playlist seleccionada: <strong>{playlistActiva.nombre}</strong>
-                    </p>
+                        <p className="mt-2 text-xs sm:text-sm text-green-600 dark:text-green-400">
+                          ✅ Playlist seleccionada: <strong>{playlistActiva.nombre}</strong>
+                        </p>
                   )}
                 </div>
               )}
@@ -114,7 +114,7 @@ export default function CronometroPage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             {/* Columna izquierda: Cronómetro */}
-            <div className="rounded-lg shadow-md p-4 sm:p-6 bg-white">
+                <div className="rounded-lg shadow-md p-4 sm:p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
               <Cronometro
                 fases={rutina}
                 onVolver={() => setModo("config")}
@@ -127,11 +127,11 @@ export default function CronometroPage() {
 
             {/* Columna derecha: Playlist */}
             {playlistActiva && (
-              <div className="rounded-lg shadow-md p-4 sm:p-6 bg-white flex flex-col justify-between">
+                  <div className="rounded-lg shadow-md p-4 sm:p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
                 <div>
-                  <h2 className="text-lg sm:text-xl font-semibold mb-2">
-                    🎶 Playlist activa: {playlistActiva.nombre}
-                  </h2>
+                      <h2 className="text-lg sm:text-xl font-semibold mb-2 text-slate-800 dark:text-slate-100">
+                        🎶 Playlist activa: {playlistActiva.nombre}
+                      </h2>
                   <MusicPlayer playlist={playlistActiva} autoPlay />
                 </div>
               </div>
@@ -151,11 +151,11 @@ export default function CronometroPage() {
             </Button>
           }
         >
-          <div className="space-y-2 text-sm sm:text-base">
-            <p><strong>Duración:</strong> {resumen.duracion} min</p>
-            {resumen.playlist && <p><strong>Playlist:</strong> {resumen.playlist}</p>}
-            <p><strong>Calorías estimadas:</strong> {resumen.duracion * 7} kcal</p>
-          </div>
+              <div className="space-y-2 text-sm sm:text-base text-slate-800 dark:text-slate-200">
+                <p><strong>Duración:</strong> {resumen.duracion} min</p>
+                {resumen.playlist && <p><strong>Playlist:</strong> {resumen.playlist}</p>}
+                <p><strong>Calorías estimadas:</strong> {resumen.duracion * 7} kcal</p>
+              </div>
         </Modal>
       </div>
     </Layout>

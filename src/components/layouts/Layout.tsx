@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export function Layout({ children, onLogout }: LayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       {/* Header global */}
       <Header onLogout={onLogout} />
 

@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { Timer, Calendar, Activity, Dumbbell, Home as HomeIcon, LogOut, Menu, X } from "lucide-react"
+import { Timer, Calendar, Activity, Dumbbell, Home as HomeIcon, LogOut, Menu, X, Sun, Moon } from "lucide-react"
 import { useState } from "react"
+import { useTheme } from "@/hooks/useTheme"
 
 interface HeaderProps {
   onLogout?: () => void
@@ -10,11 +11,12 @@ interface HeaderProps {
 export default function Header({ onLogout }: HeaderProps) {
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { theme, toggleTheme } = useTheme()
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
-    <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
+    <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -25,47 +27,63 @@ export default function Header({ onLogout }: HeaderProps) {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <Timer className="h-5 w-5 text-primary-foreground" />
             </div>
-            <h1 className="text-xl font-bold text-slate-800">FitChrono</h1>
+            <h1 className="text-xl font-bold text-slate-800 dark:text-slate-100">FitChrono</h1>
           </div>
 
           {/* Desktop Menu */}
           <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+            <Link to="/" className="flex items-center space-x-1 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors">
               <HomeIcon className="h-4 w-4" />
               <span>Inicio</span>
             </Link>
-            <Link to="/cronometro" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+            <Link to="/cronometro" className="flex items-center space-x-1 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors">
               <Timer className="h-4 w-4" />
               <span>Cronómetro</span>
             </Link>
-            <Link to="/calendario" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+            <Link to="/calendario" className="flex items-center space-x-1 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors">
               <Calendar className="h-4 w-4" />
               <span>Calendario</span>
             </Link>
-            <Link to="/imc" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+            <Link to="/imc" className="flex items-center space-x-1 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors">
               <Activity className="h-4 w-4" />
               <span>IMC</span>
             </Link>
-            <Link to="/rutinas" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+            <Link to="/rutinas" className="flex items-center space-x-1 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors">
               <Dumbbell className="h-4 w-4" />
               <span>Rutinas</span>
             </Link>
           </nav>
 
-          {/* Desktop Logout */}
-          {onLogout && (
-            <div className="hidden md:block">
+          {/* Desktop Controls */}
+          <div className="hidden md:flex items-center space-x-2">
+            {/* Theme Toggle */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleTheme}
+              className="p-2"
+              aria-label="Toggle theme"
+            >
+              {theme === 'light' ? (
+                <Moon className="h-4 w-4" />
+              ) : (
+                <Sun className="h-4 w-4" />
+              )}
+            </Button>
+            
+            {/* Logout */}
+            {onLogout && (
               <Button variant="outline" onClick={onLogout} className="flex items-center space-x-2">
                 <LogOut className="h-4 w-4" />
                 <span>Salir</span>
               </Button>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -74,11 +92,11 @@ export default function Header({ onLogout }: HeaderProps) {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-slate-200 pt-4">
+          <div className="md:hidden mt-4 pb-4 border-t border-slate-200 dark:border-slate-700 pt-4">
             <nav className="flex flex-col space-y-3">
               <Link 
                 to="/" 
-                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                className="flex items-center space-x-2 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <HomeIcon className="h-4 w-4" />
@@ -86,7 +104,7 @@ export default function Header({ onLogout }: HeaderProps) {
               </Link>
               <Link 
                 to="/cronometro" 
-                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                className="flex items-center space-x-2 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Timer className="h-4 w-4" />
@@ -94,7 +112,7 @@ export default function Header({ onLogout }: HeaderProps) {
               </Link>
               <Link 
                 to="/calendario" 
-                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                className="flex items-center space-x-2 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Calendar className="h-4 w-4" />
@@ -102,7 +120,7 @@ export default function Header({ onLogout }: HeaderProps) {
               </Link>
               <Link 
                 to="/imc" 
-                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                className="flex items-center space-x-2 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Activity className="h-4 w-4" />
@@ -110,12 +128,32 @@ export default function Header({ onLogout }: HeaderProps) {
               </Link>
               <Link 
                 to="/rutinas" 
-                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                className="flex items-center space-x-2 text-slate-700 dark:text-slate-300 hover:text-primary transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Dumbbell className="h-4 w-4" />
                 <span>Rutinas</span>
               </Link>
+              {/* Mobile Theme Toggle */}
+              <Button
+                variant="outline"
+                onClick={toggleTheme}
+                className="flex items-center space-x-2 justify-start mt-4"
+              >
+                {theme === 'light' ? (
+                  <>
+                    <Moon className="h-4 w-4" />
+                    <span>Modo Oscuro</span>
+                  </>
+                ) : (
+                  <>
+                    <Sun className="h-4 w-4" />
+                    <span>Modo Claro</span>
+                  </>
+                )}
+              </Button>
+              
+              {/* Mobile Logout */}
               {onLogout && (
                 <Button 
                   variant="outline" 
@@ -123,7 +161,7 @@ export default function Header({ onLogout }: HeaderProps) {
                     onLogout()
                     setIsMenuOpen(false)
                   }} 
-                  className="flex items-center space-x-2 justify-start mt-4"
+                  className="flex items-center space-x-2 justify-start"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Salir</span>

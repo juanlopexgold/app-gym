@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { FaseRutina } from "../types"
+import CircularTimer from "./CircularTimer"
 
 interface CronometroProps {
     fases: FaseRutina[]
@@ -119,46 +120,46 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
         <div className="space-y-4 sm:space-y-6">
             {/* Header */}
             <div className="text-center">
-                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 mb-2 px-2">
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 dark:text-slate-100 mb-2 px-2">
                     {fase.nombre}
                 </h2>
-                <div className="w-full bg-slate-200 rounded-full h-2">
+                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
                     <div 
                         className="bg-primary h-2 rounded-full transition-all duration-300"
                         style={{ width: `${progreso}%` }}
                     ></div>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-600 mt-2">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-2">
                     Fase {faseIndex + 1} de {fases.length}
                 </p>
             </div>
 
             {/* Timer principal */}
             <div className="text-center">
-                <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-3 sm:mb-4">
-                    {tiempo}s
+                <div className="mb-4 sm:mb-6">
+                    <CircularTimer 
+                        time={tiempo} 
+                        totalTime={tiempoTotal}
+                        size={180}
+                        strokeWidth={8}
+                        className="mx-auto"
+                    />
                 </div>
-                <div className="text-base sm:text-lg text-slate-600 mb-2">
+                <div className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-2">
                     {estado === "preparacion" && "🔥 Preparación"}
                     {estado === "ejercicio" && "💪 Ejercicio"}
                     {estado === "descanso" && "😮‍💨 Descanso"}
-                </div>
-                <div className="w-full bg-slate-200 rounded-full h-2">
-                    <div 
-                        className="bg-green-500 h-2 rounded-full transition-all duration-1000"
-                        style={{ width: `${((tiempoTotal - tiempo) / tiempoTotal) * 100}%` }}
-                    ></div>
                 </div>
             </div>
 
             {/* Información del ejercicio */}
             {estado === "ejercicio" && ejercicio && (
-                <div className="bg-slate-50 rounded-lg p-3 sm:p-4">
-                    <h3 className="text-base sm:text-lg font-semibold text-slate-800 mb-2">
+                <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 sm:p-4">
+                    <h3 className="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">
                         Ejercicio {ejercicio.numeroEjercicio}: {ejercicio.nombre}
                     </h3>
-                    <p className="text-sm sm:text-base text-slate-600">{ejercicio.descripcion}</p>
-                    <div className="mt-2 text-xs sm:text-sm text-slate-500">
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300">{ejercicio.descripcion}</p>
+                    <div className="mt-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                         Serie {serieActual} de {fase.series} | Ejercicio {ejercicioActual + 1} de {fase.ejercicios.length}
                     </div>
                 </div>
@@ -182,8 +183,8 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
             </div>
 
             {/* Lista de ejercicios */}
-            <div className="bg-slate-50 rounded-lg p-3 sm:p-4">
-                <h3 className="text-base sm:text-lg font-semibold mb-3">📋 Ejercicios de esta fase</h3>
+            <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 sm:p-4">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 text-slate-800 dark:text-slate-100">📋 Ejercicios de esta fase</h3>
                 <div className="space-y-1 sm:space-y-2">
                     {fase.ejercicios.map((ej, index) => (
                         <div 
@@ -191,7 +192,7 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
                             className={`p-2 rounded text-xs sm:text-sm ${
                                 index === ejercicioActual && estado === "ejercicio" 
                                     ? "bg-primary text-white" 
-                                    : "bg-white"
+                                    : "bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200"
                             }`}
                         >
                             {ej.numeroEjercicio}. {ej.nombre}
