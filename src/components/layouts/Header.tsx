@@ -1,0 +1,138 @@
+import { Link, useNavigate } from "react-router-dom"
+import { Button } from "@/components/ui/button"
+import { Timer, Calendar, Activity, Dumbbell, Home as HomeIcon, LogOut, Menu, X } from "lucide-react"
+import { useState } from "react"
+
+interface HeaderProps {
+  onLogout?: () => void
+}
+
+export default function Header({ onLogout }: HeaderProps) {
+  const navigate = useNavigate()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+
+  return (
+    <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+          <div 
+            className="flex items-center space-x-2 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <Timer className="h-5 w-5 text-primary-foreground" />
+            </div>
+            <h1 className="text-xl font-bold text-slate-800">FitChrono</h1>
+          </div>
+
+          {/* Desktop Menu */}
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+              <HomeIcon className="h-4 w-4" />
+              <span>Inicio</span>
+            </Link>
+            <Link to="/cronometro" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+              <Timer className="h-4 w-4" />
+              <span>Cronómetro</span>
+            </Link>
+            <Link to="/calendario" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+              <Calendar className="h-4 w-4" />
+              <span>Calendario</span>
+            </Link>
+            <Link to="/imc" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+              <Activity className="h-4 w-4" />
+              <span>IMC</span>
+            </Link>
+            <Link to="/rutinas" className="flex items-center space-x-1 text-slate-700 hover:text-primary transition-colors">
+              <Dumbbell className="h-4 w-4" />
+              <span>Rutinas</span>
+            </Link>
+          </nav>
+
+          {/* Desktop Logout */}
+          {onLogout && (
+            <div className="hidden md:block">
+              <Button variant="outline" onClick={onLogout} className="flex items-center space-x-2">
+                <LogOut className="h-4 w-4" />
+                <span>Salir</span>
+              </Button>
+            </div>
+          )}
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={toggleMenu}
+            className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t border-slate-200 pt-4">
+            <nav className="flex flex-col space-y-3">
+              <Link 
+                to="/" 
+                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <HomeIcon className="h-4 w-4" />
+                <span>Inicio</span>
+              </Link>
+              <Link 
+                to="/cronometro" 
+                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Timer className="h-4 w-4" />
+                <span>Cronómetro</span>
+              </Link>
+              <Link 
+                to="/calendario" 
+                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Calendar className="h-4 w-4" />
+                <span>Calendario</span>
+              </Link>
+              <Link 
+                to="/imc" 
+                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Activity className="h-4 w-4" />
+                <span>IMC</span>
+              </Link>
+              <Link 
+                to="/rutinas" 
+                className="flex items-center space-x-2 text-slate-700 hover:text-primary transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Dumbbell className="h-4 w-4" />
+                <span>Rutinas</span>
+              </Link>
+              {onLogout && (
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    onLogout()
+                    setIsMenuOpen(false)
+                  }} 
+                  className="flex items-center space-x-2 justify-start mt-4"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Salir</span>
+                </Button>
+              )}
+            </nav>
+          </div>
+        )}
+      </div>
+    </header>
+  )
+}
