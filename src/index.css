@@ -132,4 +132,39 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Mejoras para inputs de archivo en modo oscuro */
+  input[type="file"] {
+    @apply cursor-pointer;
+  }
+  
+  input[type="file"]::file-selector-button {
+    @apply bg-secondary text-secondary-foreground border-0 rounded-md px-3 py-1.5 text-sm font-medium cursor-pointer hover:bg-secondary/80 transition-colors mr-2;
+  }
+  
+  .dark input[type="file"]::file-selector-button {
+    @apply bg-slate-700 text-slate-100 hover:bg-slate-600;
+  }
+  
+  /* Mejoras para select en modo oscuro */
+  select {
+    @apply bg-background text-foreground border-input;
+  }
+  
+  /* Mejoras para placeholders */
+  ::placeholder {
+    @apply text-muted-foreground opacity-60;
+  }
+  
+  /* Mejora de contraste para texto en modo oscuro */
+  .dark input,
+  .dark textarea,
+  .dark select {
+    @apply text-slate-100;
+  }
+  
+  .dark input::placeholder,
+  .dark textarea::placeholder {
+    @apply text-slate-400;
+  }
 }

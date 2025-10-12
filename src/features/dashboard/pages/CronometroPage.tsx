@@ -47,7 +47,7 @@ export default function CronometroPage() {
             {/* Dropdown de rutinas predeterminadas */}
             <div className="mb-3 sm:mb-4">
               <button
-                className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base hover:bg-primary/90 transition-colors"
+                className="bg-primary text-primary-foreground px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base hover:bg-primary/90 transition-colors shadow-sm"
                 onClick={() => setMostrarRutinas(!mostrarRutinas)}
               >
                 <span className="truncate">Usar Rutina Predeterminada</span>
@@ -55,14 +55,14 @@ export default function CronometroPage() {
               </button>
 
                   {mostrarRutinas && (
-                    <div className="mt-2 border rounded p-2 sm:p-3 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow space-y-1 sm:space-y-2">
-                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaLunes); setModo("run") }}>Lunes – Pecho + Tríceps</button>
-                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaMartes); setModo("run") }}>Martes – Piernas + Glúteos</button>
-                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaMiercoles); setModo("run") }}>Miércoles – Espalda + Bíceps</button>
-                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaJueves); setModo("run") }}>Jueves – Cardio HIIT + Core</button>
-                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaViernes); setModo("run") }}>Viernes – Brazos intensos</button>
-                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaSabado); setModo("run") }}>Sábado – Piernas + Glúteos</button>
-                      <button className="w-full text-left px-2 py-1 sm:py-2 hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200" onClick={() => { setRutina(rutinaDomingo); setModo("run") }}>Domingo – Descanso activo</button>
+                    <div className="mt-2 border rounded-lg p-2 sm:p-3 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-lg space-y-1 sm:space-y-2">
+                      <button className="w-full text-left px-2 py-1 sm:py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 transition-colors" onClick={() => { setRutina(rutinaLunes); setModo("run") }}>Lunes – Pecho + Tríceps</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 transition-colors" onClick={() => { setRutina(rutinaMartes); setModo("run") }}>Martes – Piernas + Glúteos</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 transition-colors" onClick={() => { setRutina(rutinaMiercoles); setModo("run") }}>Miércoles – Espalda + Bíceps</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 transition-colors" onClick={() => { setRutina(rutinaJueves); setModo("run") }}>Jueves – Cardio HIIT + Core</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 transition-colors" onClick={() => { setRutina(rutinaViernes); setModo("run") }}>Viernes – Brazos intensos</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 transition-colors" onClick={() => { setRutina(rutinaSabado); setModo("run") }}>Sábado – Piernas + Glúteos</button>
+                      <button className="w-full text-left px-2 py-1 sm:py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-xs sm:text-sm text-slate-800 dark:text-slate-200 transition-colors" onClick={() => { setRutina(rutinaDomingo); setModo("run") }}>Domingo – Descanso activo</button>
                 </div>
               )}
             </div>
@@ -70,7 +70,7 @@ export default function CronometroPage() {
             {/* Botón 2: dropdown que muestra/oculta el formulario de rutina */}
             <div className="mb-3 sm:mb-4">
               <button
-                className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base hover:bg-primary/90 transition-colors"
+                className="bg-primary text-primary-foreground px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base hover:bg-primary/90 transition-colors shadow-sm"
                 onClick={() => setMostrarForm(!mostrarForm)}
               >
                 <span className="truncate">Configurar nueva rutina</span>
@@ -92,7 +92,7 @@ export default function CronometroPage() {
             {/* Botón 3: dropdown para configurar playlist */}
             <div className="mb-3 sm:mb-4">
               <button
-                className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base hover:bg-primary/90 transition-colors"
+                className="bg-primary text-primary-foreground px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base hover:bg-primary/90 transition-colors shadow-sm"
                 onClick={() => setMostrarPlaylist(!mostrarPlaylist)}
               >
                 <span className="truncate">🎶 Configurar Playlist</span>
