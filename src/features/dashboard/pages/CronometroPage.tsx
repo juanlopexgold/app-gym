@@ -47,7 +47,7 @@ export default function CronometroPage() {
             {/* Dropdown de rutinas predeterminadas */}
             <div className="mb-3 sm:mb-4">
               <button
-                className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base"
+                className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base hover:bg-primary/90 transition-colors"
                 onClick={() => setMostrarRutinas(!mostrarRutinas)}
               >
                 <span className="truncate">Usar Rutina Predeterminada</span>
@@ -70,7 +70,7 @@ export default function CronometroPage() {
             {/* Botón 2: dropdown que muestra/oculta el formulario de rutina */}
             <div className="mb-3 sm:mb-4">
               <button
-                className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base"
+                className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base hover:bg-primary/90 transition-colors"
                 onClick={() => setMostrarForm(!mostrarForm)}
               >
                 <span className="truncate">Configurar nueva rutina</span>
@@ -92,7 +92,7 @@ export default function CronometroPage() {
             {/* Botón 3: dropdown para configurar playlist */}
             <div className="mb-3 sm:mb-4">
               <button
-                className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base"
+                className="bg-primary text-white px-3 sm:px-4 py-2 sm:py-3 rounded w-full flex justify-between items-center text-sm sm:text-base hover:bg-primary/90 transition-colors"
                 onClick={() => setMostrarPlaylist(!mostrarPlaylist)}
               >
                 <span className="truncate">🎶 Configurar Playlist</span>
@@ -146,7 +146,10 @@ export default function CronometroPage() {
           title="🎉 ¡Rutina completada!"
           description="Aquí tienes un resumen de tu entrenamiento"
           footer={
-            <Button onClick={() => setMostrarResumen(false)} className="bg-green-500 text-white">
+            <Button 
+              onClick={() => setMostrarResumen(false)} 
+              className="bg-green-500 hover:bg-green-600 text-white"
+            >
               Cerrar
             </Button>
           }

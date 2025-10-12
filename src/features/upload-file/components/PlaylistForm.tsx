@@ -140,7 +140,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
                                     onClick={() => onSelect(playlist)}
                                     variant="outline"
                                     size="sm"
-                                    className="text-xs flex-1 sm:flex-none"
+                                    className="text-xs flex-1 sm:flex-none border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
                                 >
                                     Seleccionar
                                 </Button>
@@ -148,7 +148,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
                                     onClick={() => editarPlaylist(index)}
                                     variant="outline"
                                     size="sm"
-                                    className="text-xs flex-1 sm:flex-none"
+                                    className="text-xs flex-1 sm:flex-none border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
                                 >
                                     Editar
                                 </Button>
@@ -156,7 +156,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
                                     onClick={() => eliminarPlaylist(index)}
                                     variant="outline"
                                     size="sm"
-                                    className="text-xs flex-1 sm:flex-none"
+                                    className="text-xs flex-1 sm:flex-none border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
                                 >
                                     Eliminar
                                 </Button>
@@ -194,9 +194,13 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
                             placeholder="https://youtube.com/watch?v=... o URL de archivo"
                             className="h-8 sm:h-10"
                         />
-                        <Button onClick={agregarCancion} variant="outline" className="h-8 sm:h-10 text-xs">
-                            Agregar
-                        </Button>
+                            <Button 
+                                onClick={agregarCancion} 
+                                variant="outline" 
+                                className="h-8 sm:h-10 text-xs border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                            >
+                                Agregar
+                            </Button>
                     </div>
                 </div>
 
@@ -211,9 +215,14 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
                             onChange={(e) => setArchivo(e.target.files?.[0] || null)}
                             className="h-8 sm:h-10"
                         />
-                        <Button onClick={subirArchivo} variant="outline" disabled={!archivo} className="h-8 sm:h-10 text-xs">
-                            Subir
-                        </Button>
+                            <Button 
+                                onClick={subirArchivo} 
+                                variant="outline" 
+                                disabled={!archivo} 
+                                className="h-8 sm:h-10 text-xs border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50"
+                            >
+                                Subir
+                            </Button>
                     </div>
                 </div>
 
@@ -230,7 +239,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
                                     onClick={() => quitarCancion(index)}
                                     variant="outline"
                                     size="sm"
-                                    className="text-xs w-full sm:w-auto"
+                                    className="text-xs w-full sm:w-auto border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
                                 >
                                     Quitar
                                 </Button>
@@ -239,13 +248,13 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
                     </div>
                 )}
 
-                <Button
-                    onClick={editIndex !== null ? actualizarPlaylist : guardarPlaylist}
-                    className="w-full h-8 sm:h-10 text-xs sm:text-sm"
-                    disabled={!nombre || canciones.length === 0}
-                >
-                    {editIndex !== null ? "Actualizar Playlist" : "Guardar Playlist"}
-                </Button>
+                    <Button
+                        onClick={editIndex !== null ? actualizarPlaylist : guardarPlaylist}
+                        className="w-full h-8 sm:h-10 text-xs sm:text-sm bg-primary text-white hover:bg-primary/90 disabled:opacity-50"
+                        disabled={!nombre || canciones.length === 0}
+                    >
+                        {editIndex !== null ? "Actualizar Playlist" : "Guardar Playlist"}
+                    </Button>
             </div>
         </div>
     )

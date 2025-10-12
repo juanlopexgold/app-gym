@@ -61,7 +61,7 @@ export default function Header({ onLogout }: HeaderProps) {
               variant="outline"
               size="sm"
               onClick={toggleTheme}
-              className="p-2"
+              className="p-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
               aria-label="Toggle theme"
             >
               {theme === 'light' ? (
@@ -73,7 +73,11 @@ export default function Header({ onLogout }: HeaderProps) {
             
             {/* Logout */}
             {onLogout && (
-              <Button variant="outline" onClick={onLogout} className="flex items-center space-x-2">
+              <Button 
+                variant="outline" 
+                onClick={onLogout} 
+                className="flex items-center space-x-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+              >
                 <LogOut className="h-4 w-4" />
                 <span>Salir</span>
               </Button>
@@ -138,7 +142,7 @@ export default function Header({ onLogout }: HeaderProps) {
               <Button
                 variant="outline"
                 onClick={toggleTheme}
-                className="flex items-center space-x-2 justify-start mt-4"
+                className="flex items-center space-x-2 justify-start mt-4 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
               >
                 {theme === 'light' ? (
                   <>
@@ -161,7 +165,7 @@ export default function Header({ onLogout }: HeaderProps) {
                     onLogout()
                     setIsMenuOpen(false)
                   }} 
-                  className="flex items-center space-x-2 justify-start"
+                  className="flex items-center space-x-2 justify-start border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Salir</span>

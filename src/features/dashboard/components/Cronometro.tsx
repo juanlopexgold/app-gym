@@ -169,15 +169,25 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
             <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4">
                 <Button 
                     onClick={toggleTimer}
-                    className={`${activo ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"} w-full sm:w-auto`}
+                    className={`${activo ? "bg-red-500 hover:bg-red-600 text-white" : "bg-green-500 hover:bg-green-600 text-white"} w-full sm:w-auto`}
                     size="lg"
                 >
                     {activo ? "⏸️ Pausar" : "▶️ Iniciar"}
                 </Button>
-                <Button onClick={resetTimer} variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button 
+                    onClick={resetTimer} 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full sm:w-auto border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                >
                     🔄 Reiniciar
                 </Button>
-                <Button onClick={onVolver} variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button 
+                    onClick={onVolver} 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full sm:w-auto border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                >
                     ← Volver
                 </Button>
             </div>

@@ -38,22 +38,22 @@ export default function MusicPlayer({ playlist, autoPlay = false }: MusicPlayerP
       )}
 
       <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4">
-        <Button 
-          variant="outline" 
-          onClick={anterior} 
-          disabled={index === 0}
-          className="w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-10"
-        >
-          ⏮️ Anterior
-        </Button>
-        <Button 
-          variant="outline" 
-          onClick={siguiente} 
-          disabled={index === playlist.canciones.length - 1}
-          className="w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-10"
-        >
-          ⏭️ Siguiente
-        </Button>
+            <Button
+              variant="outline"
+              onClick={anterior}
+              disabled={index === 0}
+              className="w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-10 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50"
+            >
+              ⏮️ Anterior
+            </Button>
+            <Button
+              variant="outline"
+              onClick={siguiente}
+              disabled={index === playlist.canciones.length - 1}
+              className="w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-10 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50"
+            >
+              ⏭️ Siguiente
+            </Button>
       </div>
     </div>
   )

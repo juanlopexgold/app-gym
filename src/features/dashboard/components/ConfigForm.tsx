@@ -97,7 +97,7 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
                 onClick={() => quitarFase(index)}
                 variant="outline"
                 size="sm"
-                className="w-full sm:w-auto text-xs"
+                className="w-full sm:w-auto text-xs border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
               >
                 Quitar
               </Button>
@@ -181,7 +181,7 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
                 onClick={() => quitarEjercicio(index)}
                 variant="outline"
                 size="sm"
-                className="w-full sm:w-auto text-xs"
+                className="w-full sm:w-auto text-xs border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
               >
                 Quitar
               </Button>
@@ -211,21 +211,32 @@ export default function ConfigForm({ onConfigurar }: ConfigFormProps) {
             </div>
           </div>
           
-          <Button onClick={agregarEjercicio} variant="outline" size="sm" className="w-full sm:w-auto text-xs">
-            + Agregar Ejercicio
-          </Button>
+              <Button 
+                onClick={agregarEjercicio} 
+                variant="outline" 
+                size="sm" 
+                className="w-full sm:w-auto text-xs border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+              >
+                + Agregar Ejercicio
+              </Button>
         </div>
 
-        <Button onClick={agregarFase} className="w-full h-8 sm:h-10 text-xs sm:text-sm">
-          + Agregar Fase
-        </Button>
+            <Button 
+              onClick={agregarFase} 
+              className="w-full h-8 sm:h-10 text-xs sm:text-sm bg-primary text-white hover:bg-primary/90"
+            >
+              + Agregar Fase
+            </Button>
       </div>
 
       {/* Botón final */}
       {fases.length > 0 && (
-        <Button onClick={configurar} className="w-full bg-green-500 hover:bg-green-600 h-8 sm:h-10 text-xs sm:text-sm">
-          🚀 Iniciar Rutina Personalizada
-        </Button>
+            <Button 
+              onClick={configurar} 
+              className="w-full bg-green-500 hover:bg-green-600 text-white h-8 sm:h-10 text-xs sm:text-sm"
+            >
+              🚀 Iniciar Rutina Personalizada
+            </Button>
       )}
     </div>
   )
