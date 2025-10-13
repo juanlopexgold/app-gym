@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Amplify } from 'aws-amplify'
 import './index.css'
 import App from './App.tsx'
-import { registerSW, installPWA } from './lib/pwa'
+import { registerSW, installPWA, setupReminders } from './lib/pwa'
 
 // Configuración de AWS Amplify
 Amplify.configure({
@@ -25,6 +25,7 @@ Amplify.configure({
 // Registrar Service Worker y configurar PWA
 registerSW()
 installPWA()
+setupReminders()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

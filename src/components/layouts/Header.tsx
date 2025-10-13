@@ -1,8 +1,10 @@
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { Timer, Calendar, Activity, Dumbbell, Home as HomeIcon, LogOut, Menu, X, Sun, Moon } from "lucide-react"
+import { Timer, Calendar, Activity, Dumbbell, Home as HomeIcon, LogOut, Menu, X, Sun, Moon, Download, Smartphone } from "lucide-react"
 import { useState } from "react"
 import { useTheme } from "@/hooks/useTheme"
+import { usePWAInstall } from "@/hooks/usePWAInstall"
+import IOSInstallGuide from "@/components/ui/IOSInstallGuide"
 
 interface HeaderProps {
   onLogout?: () => void
@@ -12,6 +14,15 @@ export default function Header({ onLogout }: HeaderProps) {
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
+  const { 
+    isInstallable, 
+    isInstalled, 
+    isIOS, 
+    showIOSGuide, 
+    installApp, 
+    showIOSInstallGuide, 
+    hideIOSInstallGuide 
+  } = usePWAInstall()
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
@@ -56,6 +67,29 @@ export default function Header({ onLogout }: HeaderProps) {
 
           {/* Desktop Controls */}
           <div className="hidden md:flex items-center space-x-2">
+            {/* PWA Install Button */}
+            {!isInstalled && (isInstallable || isIOS) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={isIOS ? showIOSInstallGuide : installApp}
+                className="flex items-center space-x-1 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                aria-label="Install app"
+              >
+                {isIOS ? (
+                  <>
+                    <Smartphone className="h-4 w-4" />
+                    <span>Instalar</span>
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4" />
+                    <span>Instalar</span>
+                  </>
+                )}
+              </Button>
+            )}
+
             {/* Theme Toggle */}
             <Button
               variant="outline"
@@ -138,11 +172,32 @@ export default function Header({ onLogout }: HeaderProps) {
                 <Dumbbell className="h-4 w-4" />
                 <span>Rutinas</span>
               </Link>
+              {/* Mobile PWA Install Button */}
+              {!isInstalled && (isInstallable || isIOS) && (
+                <Button
+                  variant="outline"
+                  onClick={isIOS ? showIOSInstallGuide : installApp}
+                  className="flex items-center space-x-2 justify-start mt-4 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                >
+                  {isIOS ? (
+                    <>
+                      <Smartphone className="h-4 w-4" />
+                      <span>Instalar App</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="h-4 w-4" />
+                      <span>Instalar App</span>
+                    </>
+                  )}
+                </Button>
+              )}
+
               {/* Mobile Theme Toggle */}
               <Button
                 variant="outline"
                 onClick={toggleTheme}
-                className="flex items-center space-x-2 justify-start mt-4 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                className="flex items-center space-x-2 justify-start border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
               >
                 {theme === 'light' ? (
                   <>
@@ -175,6 +230,12 @@ export default function Header({ onLogout }: HeaderProps) {
           </div>
         )}
       </div>
+
+      {/* iOS Install Guide Modal */}
+      <IOSInstallGuide 
+        isOpen={showIOSGuide} 
+        onClose={hideIOSInstallGuide} 
+      />
     </header>
   )
 }

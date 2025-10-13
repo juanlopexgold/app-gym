@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Plus, Calendar as CalendarIcon } from "lucide-react"
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { WorkoutEntry } from "@/types/workout"
-import { getWorkoutsByDate, getWorkoutsByMonth } from "@/lib/workoutStorage"
+import { getWorkoutsByMonth } from "@/lib/workoutStorage"
 import WorkoutModal from "./WorkoutModal"
 
-interface CalendarProps {
-  onWorkoutClick?: (workout: WorkoutEntry) => void
-}
-
-export default function Calendar({ onWorkoutClick }: CalendarProps) {
+export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [showWorkoutModal, setShowWorkoutModal] = useState(false)

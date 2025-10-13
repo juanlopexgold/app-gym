@@ -1,4 +1,4 @@
-import { IMCEntry, IMCStats, IMCChartData, calculateIMC, getIMCCategory } from "@/types/imc"
+import { IMCEntry, IMCStats, IMCChartData } from "@/types/imc"
 
 const STORAGE_KEY = "imcEntries"
 

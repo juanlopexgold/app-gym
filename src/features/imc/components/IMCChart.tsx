@@ -52,12 +52,15 @@ export default function IMCChart() {
   }))
 
   // Calcular estadísticas para el tooltip personalizado
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = (props: unknown) => {
+    const p = props as { active?: boolean; payload?: unknown[] }
+    const { active, payload } = p
     if (active && payload && payload.length) {
-      const data = payload[0].payload
+  const first = payload[0] as { payload?: unknown }
+  const data = first.payload as { date?: string; weight?: number; height?: number; imc?: number; category?: string }
       return (
         <div className="bg-slate-800 text-white p-3 rounded-lg shadow-lg border border-slate-600">
-          <p className="font-medium">{new Date(data.date).toLocaleDateString('es-ES')}</p>
+          <p className="font-medium">{data.date ? new Date(data.date).toLocaleDateString('es-ES') : ''}</p>
           <div className="space-y-1 text-sm">
             <p><span className="text-blue-300">Peso:</span> {data.weight} kg</p>
             <p><span className="text-green-300">Altura:</span> {data.height} cm</p>

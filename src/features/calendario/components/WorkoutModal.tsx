@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { WorkoutEntry } from "@/types/workout"
 import { saveWorkout, generateWorkoutId, getWorkoutsByDate } from "@/lib/workoutStorage"
 import { getAllPlaylists } from "@/lib/defaultPlaylists"
+import { Playlist } from "@/features/upload-file/types"
 
 interface WorkoutModalProps {
   date: string
@@ -24,7 +25,7 @@ export default function WorkoutModal({ date, onClose, onSave, workoutId }: Worko
     intensity: 3,
     notes: ''
   })
-  const [playlists, setPlaylists] = useState<any[]>([])
+  const [playlists, setPlaylists] = useState<Playlist[]>([])
 
   // Cargar playlists disponibles
   useEffect(() => {

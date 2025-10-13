@@ -2,13 +2,13 @@ import { useState } from "react"
 import { X, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { getIMCCategoryDescription, getIMCCategoryColor } from "@/types/imc"
+import { getIMCCategoryDescription, getIMCCategoryColor, IMCategory } from "@/types/imc"
 
 interface IMCModalProps {
   weight: number
   height: number
   imc: number
-  category: string
+  category: IMCategory
   onSave: (notes?: string) => void
   onClose: () => void
 }

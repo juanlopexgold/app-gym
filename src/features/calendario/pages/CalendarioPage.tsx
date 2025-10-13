@@ -7,7 +7,7 @@ import { BarChart3, Calendar as CalendarIcon } from "lucide-react"
 
 export default function CalendarioPage() {
   const [currentView, setCurrentView] = useState<"calendar" | "stats">("calendar")
-  const [currentDate, setCurrentDate] = useState(new Date())
+  const [currentDate] = useState(new Date())
 
   return (
     <Layout>

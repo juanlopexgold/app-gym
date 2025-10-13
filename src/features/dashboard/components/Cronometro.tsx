@@ -17,6 +17,7 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
     const [tiempo, setTiempo] = useState(fases[0].preparacion)
     const [tiempoTotal, setTiempoTotal] = useState(fases[0].preparacion)
     const [activo, setActivo] = useState(false)
+    const [startTime, setStartTime] = useState(0)
 
     const fase = fases[faseIndex]
 
@@ -87,9 +88,7 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
             const timer = setTimeout(() => setTiempo(tiempo - 1), 1000)
             return () => clearTimeout(timer)
         }
-    }, [tiempo, activo, estado, faseIndex, serieActual, ejercicioActual, fase, fases, onFinish])
-
-    const [startTime, setStartTime] = useState(0)
+    }, [tiempo, activo, estado, faseIndex, serieActual, ejercicioActual, fase, fases, onFinish, startTime])
 
     const toggleTimer = () => {
         if (!activo) {

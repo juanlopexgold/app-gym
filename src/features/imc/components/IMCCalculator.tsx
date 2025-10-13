@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Calculator, Scale, Ruler, TrendingUp, History, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,8 @@ import IMCChart from "./IMCChart"
 export default function IMCCalculator() {
   const [weight, setWeight] = useState("")
   const [height, setHeight] = useState("")
+  const [weightUnit, setWeightUnit] = useState<'kg' | 'lb'>('kg')
+  const [heightUnit, setHeightUnit] = useState<'cm' | 'm'>('cm')
   const [calculatedIMC, setCalculatedIMC] = useState<number | null>(null)
   const [category, setCategory] = useState<string>("")
   const [showModal, setShowModal] = useState(false)
@@ -23,14 +25,20 @@ export default function IMCCalculator() {
     setEntries(getAllIMCEntries())
   }, [])
 
-  // Calcular IMC cuando cambien los valores
+  // Helpers de conversión
+  const toKg = useCallback((value: number) => (weightUnit === 'kg' ? value : Math.round((value * 0.45359237) * 100) / 100), [weightUnit])
+  const toCm = useCallback((value: number) => (heightUnit === 'cm' ? value : Math.round((value * 100) * 10) / 10), [heightUnit])
+
+  // Calcular IMC cuando cambien los valores o las unidades
   useEffect(() => {
     if (weight && height) {
       const weightNum = parseFloat(weight)
       const heightNum = parseFloat(height)
       
       if (weightNum > 0 && heightNum > 0) {
-        const imc = calculateIMC(weightNum, heightNum)
+        const weightInKg = toKg(weightNum)
+        const heightInCm = toCm(heightNum)
+        const imc = calculateIMC(weightInKg, heightInCm)
         const imcCategory = getIMCCategory(imc)
         
         setCalculatedIMC(imc)
@@ -40,7 +48,7 @@ export default function IMCCalculator() {
       setCalculatedIMC(null)
       setCategory("")
     }
-  }, [weight, height])
+  }, [weight, height, weightUnit, heightUnit, toKg, toCm])
 
   const handleCalculate = () => {
     if (!weight || !height) {
@@ -56,7 +64,9 @@ export default function IMCCalculator() {
       return
     }
 
-    const imc = calculateIMC(weightNum, heightNum)
+    const weightInKg = toKg(weightNum)
+    const heightInCm = toCm(heightNum)
+    const imc = calculateIMC(weightInKg, heightInCm)
     const imcCategory = getIMCCategory(imc)
     
     setCalculatedIMC(imc)
@@ -75,11 +85,15 @@ export default function IMCCalculator() {
   const handleSaveToHistory = (notes?: string) => {
     if (!weight || !height || !calculatedIMC) return
 
+    // Normalizar a kg y cm para guardar y graficar
+    const weightInKg = toKg(parseFloat(weight))
+    const heightInCm = toCm(parseFloat(height))
+
     const entry: IMCEntry = {
       id: generateIMCEntryId(),
       date: new Date().toISOString().split('T')[0],
-      weight: parseFloat(weight),
-      height: parseFloat(height),
+      weight: weightInKg,
+      height: heightInCm,
       imc: calculatedIMC,
       category: getIMCCategory(calculatedIMC),
       notes,
@@ -94,6 +108,8 @@ export default function IMCCalculator() {
   const clearForm = () => {
     setWeight("")
     setHeight("")
+    setWeightUnit('kg')
+    setHeightUnit('cm')
     setCalculatedIMC(null)
     setCategory("")
   }
@@ -114,7 +130,7 @@ export default function IMCCalculator() {
           <div>
             <Label htmlFor="weight" className="text-sm font-medium text-slate-700 dark:text-slate-300">
               <Scale className="h-4 w-4 inline mr-1" />
-              Peso (kg)
+              Peso ({weightUnit})
             </Label>
             <Input
               id="weight"
@@ -124,28 +140,64 @@ export default function IMCCalculator() {
               max="500"
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              placeholder="Ej: 70.5"
+              placeholder={weightUnit === 'kg' ? 'Ej: 70.5' : 'Ej: 155.0'}
               className="mt-1"
             />
+            <div className="mt-2 flex gap-2">
+              <Button
+                type="button"
+                variant={weightUnit === 'kg' ? 'default' : 'outline'}
+                onClick={() => setWeightUnit('kg')}
+                className="h-8 px-3"
+              >
+                kg
+              </Button>
+              <Button
+                type="button"
+                variant={weightUnit === 'lb' ? 'default' : 'outline'}
+                onClick={() => setWeightUnit('lb')}
+                className="h-8 px-3"
+              >
+                lb
+              </Button>
+            </div>
           </div>
 
           {/* Altura */}
           <div>
             <Label htmlFor="height" className="text-sm font-medium text-slate-700 dark:text-slate-300">
               <Ruler className="h-4 w-4 inline mr-1" />
-              Altura (cm)
+              Altura ({heightUnit})
             </Label>
             <Input
               id="height"
               type="number"
               step="0.1"
-              min="50"
-              max="250"
+              min={heightUnit === 'cm' ? "50" : "0.5"}
+              max={heightUnit === 'cm' ? "250" : "2.5"}
               value={height}
               onChange={(e) => setHeight(e.target.value)}
-              placeholder="Ej: 175"
+              placeholder={heightUnit === 'cm' ? 'Ej: 175' : 'Ej: 1.75'}
               className="mt-1"
             />
+            <div className="mt-2 flex gap-2">
+              <Button
+                type="button"
+                variant={heightUnit === 'cm' ? 'default' : 'outline'}
+                onClick={() => setHeightUnit('cm')}
+                className="h-8 px-3"
+              >
+                cm
+              </Button>
+              <Button
+                type="button"
+                variant={heightUnit === 'm' ? 'default' : 'outline'}
+                onClick={() => setHeightUnit('m')}
+                className="h-8 px-3"
+              >
+                m
+              </Button>
+            </div>
           </div>
         </div>
 

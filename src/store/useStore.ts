@@ -1,12 +1,5 @@
 import { create } from 'zustand'
 
-interface Store {
-  // Aquí puedes agregar el estado global que necesites
-  // Ejemplo:
-  // user: User | null
-  // setUser: (user: User | null) => void
-}
+type Store = Record<string, unknown>
 
-export const useStore = create<Store>(() => ({
-  // Implementa tu estado aquí
-}))
+export const useStore = create<Store>(() => ({}))
