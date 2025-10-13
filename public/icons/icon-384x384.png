@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo circular -->
+  <circle cx="256" cy="256" r="240" fill="url(#gradient)" stroke="#1E40AF" stroke-width="8"/>
+  
+  <!-- Icono de cronómetro -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="white" stroke-width="12"/>
+  
+  <!-- Manecillas del reloj -->
+  <line x1="256" y1="256" x2="256" y2="140" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <line x1="256" y1="256" x2="320" y2="256" stroke="white" stroke-width="6" stroke-linecap="round"/>
+  
+  <!-- Centro del reloj -->
+  <circle cx="256" cy="256" r="16" fill="white"/>
+  
+  <!-- Marcas de tiempo -->
+  <circle cx="256" cy="100" r="8" fill="white"/>
+  <circle cx="380" cy="256" r="8" fill="white"/>
+  <circle cx="256" cy="412" r="8" fill="white"/>
+  <circle cx="132" cy="256" r="8" fill="white"/>
+  
+  <!-- Texto "FC" -->
+  <text x="256" y="320" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="white">FC</text>
+</svg>

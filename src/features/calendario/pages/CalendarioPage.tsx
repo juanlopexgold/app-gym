@@ -1,23 +1,58 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { useState } from "react"
 import { Layout } from "@/components/layouts/Layout"
+import Calendar from "../components/Calendar"
+import WorkoutStats from "../components/WorkoutStats"
+import { Button } from "@/components/ui/button"
+import { BarChart3, Calendar as CalendarIcon } from "lucide-react"
 
 export default function CalendarioPage() {
+  const [currentView, setCurrentView] = useState<"calendar" | "stats">("calendar")
+  const [currentDate, setCurrentDate] = useState(new Date())
+
   return (
     <Layout>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <Card>
-          <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100">📅 Calendario de Entrenamientos</CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 sm:px-6">
-                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300">
-                  Marca tus entrenamientos y revisa tu historial de actividad.
-                </p>
-                <p className="mt-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                  Placeholder: pronto añadiremos el calendario interactivo.
-                </p>
-          </CardContent>
-        </Card>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100">
+              📅 Calendario de Entrenamientos
+            </h1>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mt-1">
+              Registra tus entrenamientos y revisa tu progreso
+            </p>
+          </div>
+          
+          {/* Botones de vista */}
+          <div className="flex space-x-2 mt-4 sm:mt-0">
+            <Button
+              onClick={() => setCurrentView("calendar")}
+              variant={currentView === "calendar" ? "default" : "outline"}
+              className="flex items-center space-x-2"
+            >
+              <CalendarIcon className="h-4 w-4" />
+              <span>Calendario</span>
+            </Button>
+            <Button
+              onClick={() => setCurrentView("stats")}
+              variant={currentView === "stats" ? "default" : "outline"}
+              className="flex items-center space-x-2"
+            >
+              <BarChart3 className="h-4 w-4" />
+              <span>Estadísticas</span>
+            </Button>
+          </div>
+        </div>
+
+        {/* Contenido principal */}
+        {currentView === "calendar" ? (
+          <Calendar />
+        ) : (
+          <WorkoutStats 
+            year={currentDate.getFullYear()} 
+            month={currentDate.getMonth()} 
+          />
+        )}
       </div>
     </Layout>
   )

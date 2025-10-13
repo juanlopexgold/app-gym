@@ -17,6 +17,8 @@ import { FaseRutina } from "../types"
 import { Playlist } from "../../upload-file/types"
 import Modal from "@/components/ui/Modal"
 import { Button } from "@/components/ui/button"
+import { saveWorkout, generateWorkoutId } from "@/lib/workoutStorage"
+import { WorkoutEntry } from "@/types/workout"
 
 export default function CronometroPage() {
   const [modo, setModo] = useState<"config" | "run">("config")
@@ -28,10 +30,31 @@ export default function CronometroPage() {
 
   // 👉 Estado para el modal de resumen
   const [mostrarResumen, setMostrarResumen] = useState(false)
-  const [resumen, setResumen] = useState<{ duracion: number; playlist?: string }>({
+  const [resumen, setResumen] = useState<{ duracion: number; playlist?: string; rutina?: string }>({
     duracion: 0,
     playlist: undefined,
+    rutina: undefined,
   })
+
+  // Función para guardar entrenamiento en el calendario
+  const guardarEntrenamientoEnCalendario = (duracion: number, playlist?: string, rutina?: string) => {
+    const now = new Date()
+    const workout: WorkoutEntry = {
+      id: generateWorkoutId(),
+      date: now.toISOString().split('T')[0], // YYYY-MM-DD
+      time: now.toTimeString().slice(0, 5), // HH:MM
+      type: 'cronometro',
+      routineName: rutina,
+      duration: duracion,
+      calories: Math.round(duracion * 7), // Estimación: 7 calorías por minuto
+      intensity: 3, // Intensidad por defecto
+      playlist: playlist,
+      notes: `Entrenamiento completado con cronómetro`,
+      createdAt: now.toISOString()
+    }
+    
+    saveWorkout(workout)
+  }
 
   return (
     <Layout>
@@ -119,7 +142,16 @@ export default function CronometroPage() {
                 fases={rutina}
                 onVolver={() => setModo("config")}
                 onFinish={({ duracion }: { duracion: number }) => {
-                  setResumen({ duracion, playlist: playlistActiva?.nombre })
+                  const rutinaNombre = rutina.length > 0 ? rutina[0].nombre : 'Rutina Personalizada'
+                  
+                  // Guardar automáticamente en el calendario
+                  guardarEntrenamientoEnCalendario(duracion, playlistActiva?.nombre, rutinaNombre)
+                  
+                  setResumen({ 
+                    duracion, 
+                    playlist: playlistActiva?.nombre,
+                    rutina: rutinaNombre
+                  })
                   setMostrarResumen(true)
                 }}
               />
@@ -149,10 +181,16 @@ export default function CronometroPage() {
             </Button>
           }
         >
-              <div className="space-y-2 text-sm sm:text-base text-slate-800 dark:text-slate-200">
+              <div className="space-y-3 text-sm sm:text-base text-slate-800 dark:text-slate-200">
                 <p><strong>Duración:</strong> {resumen.duracion} min</p>
+                {resumen.rutina && <p><strong>Rutina:</strong> {resumen.rutina}</p>}
                 {resumen.playlist && <p><strong>Playlist:</strong> {resumen.playlist}</p>}
                 <p><strong>Calorías estimadas:</strong> {resumen.duracion * 7} kcal</p>
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mt-4">
+                  <p className="text-green-800 dark:text-green-200 text-sm">
+                    ✅ <strong>Entrenamiento guardado</strong> en tu calendario de entrenamientos
+                  </p>
+                </div>
               </div>
         </Modal>
       </div>
