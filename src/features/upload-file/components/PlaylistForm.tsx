@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Playlist } from "../types"
 import { saveSong, getAllSongs } from "@/lib/db"
+import { getAllPlaylists, saveUserPlaylists } from "@/lib/defaultPlaylists"
 
 function extraerVideoId(url: string): string | null {
     try {
@@ -35,16 +36,39 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
     const [editIndex, setEditIndex] = useState<number | null>(null)
 
     useEffect(() => {
-        const data = localStorage.getItem("playlists")
-        if (data) setPlaylists(JSON.parse(data))
-
+        // Limpiar playlists duplicadas una sola vez
+        const limpiarDuplicados = () => {
+            const stored = localStorage.getItem("playlists")
+            if (stored) {
+                const playlists: Playlist[] = JSON.parse(stored)
+                // Filtrar duplicados por nombre
+                const playlistsUnicas = playlists.filter((playlist, index, self) => 
+                    index === self.findIndex(p => p.nombre === playlist.nombre)
+                )
+                if (playlistsUnicas.length !== playlists.length) {
+                    localStorage.setItem("playlists", JSON.stringify(playlistsUnicas))
+                }
+            }
+        }
+        
+        // Cargar todas las playlists (incluyendo la predeterminada)
+        limpiarDuplicados()
+        const allPlaylists = getAllPlaylists()
+        
         // Recuperar canciones guardadas en IndexedDB
         const cargar = async () => {
             const songs = await getAllSongs()
             const urls = songs.map((s) => URL.createObjectURL(s.blob))
-            // Opcional: podrías integrarlas a una playlist "Local"
-            if (urls.length > 0) {
-                setPlaylists((prev) => [...prev, { id: "local", nombre: "Archivos Locales", canciones: urls, tipo: 'local' }])
+            
+            // Verificar si ya existe una playlist "Archivos Locales"
+            const existingLocalPlaylist = allPlaylists.find(p => p.id === "local")
+            
+            if (urls.length > 0 && !existingLocalPlaylist) {
+                // Solo agregar si no existe ya
+                const localPlaylist = { id: "local", nombre: "Archivos Locales", canciones: urls, tipo: 'local' as const }
+                setPlaylists([...allPlaylists, localPlaylist])
+            } else {
+                setPlaylists(allPlaylists)
             }
         }
         cargar()
@@ -75,7 +99,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
         }
         const actualizadas = [...playlists, nueva]
         setPlaylists(actualizadas)
-        localStorage.setItem("playlists", JSON.stringify(actualizadas))
+        saveUserPlaylists(actualizadas)
         setNombre("")
         setCanciones([])
     }
@@ -87,6 +111,18 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
             const url = URL.createObjectURL(archivo)
             setCanciones([...canciones, url])
             setArchivo(null)
+            
+            // Actualizar la playlist de archivos locales si existe
+            const updatedPlaylists = playlists.map(playlist => {
+                if (playlist.id === "local") {
+                    return {
+                        ...playlist,
+                        canciones: [...playlist.canciones, url]
+                    }
+                }
+                return playlist
+            })
+            setPlaylists(updatedPlaylists)
         } catch (error) {
             console.error("Error al subir archivo:", error)
         }
@@ -109,7 +145,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
             tipo: canciones.some(c => c.startsWith('yt:')) ? 'youtube' : 'local'
         }
         setPlaylists(actualizadas)
-        localStorage.setItem("playlists", JSON.stringify(actualizadas))
+        saveUserPlaylists(actualizadas)
         setNombre("")
         setCanciones([])
         setEditIndex(null)
@@ -118,7 +154,7 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
     const eliminarPlaylist = (index: number) => {
         const actualizadas = playlists.filter((_, i) => i !== index)
         setPlaylists(actualizadas)
-        localStorage.setItem("playlists", JSON.stringify(actualizadas))
+        saveUserPlaylists(actualizadas)
     }
 
     return (
@@ -129,10 +165,15 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
             {playlists.length > 0 && (
                 <div className="space-y-2">
                         <h4 className="font-medium text-sm sm:text-base text-slate-800 dark:text-slate-100">Playlists guardadas:</h4>
-                    {playlists.map((playlist, index) => (
+                    {playlists.map((playlist, index) => {
+                        const esPredeterminada = playlist.id === "default"
+                        return (
                             <div key={playlist.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-100 dark:bg-slate-700 p-2 sm:p-3 rounded gap-2">
                             <div className="flex-1">
-                                    <span className="font-medium text-xs sm:text-sm text-slate-800 dark:text-slate-200">{playlist.nombre}</span>
+                                    <span className="font-medium text-xs sm:text-sm text-slate-800 dark:text-slate-200">
+                                        {playlist.nombre}
+                                        {esPredeterminada && <span className="text-xs text-blue-600 dark:text-blue-400 ml-1">(Predeterminada)</span>}
+                                    </span>
                                     <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 ml-2">({playlist.canciones.length} canciones)</span>
                             </div>
                             <div className="flex flex-wrap gap-1 sm:gap-2 w-full sm:w-auto">
@@ -144,25 +185,30 @@ export default function PlaylistForm({ onSelect }: PlaylistFormProps) {
                                 >
                                     Seleccionar
                                 </Button>
-                                <Button
-                                    onClick={() => editarPlaylist(index)}
-                                    variant="outline"
-                                    size="sm"
-                                    className="text-xs flex-1 sm:flex-none border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
-                                >
-                                    Editar
-                                </Button>
-                                <Button
-                                    onClick={() => eliminarPlaylist(index)}
-                                    variant="outline"
-                                    size="sm"
-                                    className="text-xs flex-1 sm:flex-none border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
-                                >
-                                    Eliminar
-                                </Button>
+                                {!esPredeterminada && (
+                                    <>
+                                        <Button
+                                            onClick={() => editarPlaylist(index)}
+                                            variant="outline"
+                                            size="sm"
+                                            className="text-xs flex-1 sm:flex-none border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                                        >
+                                            Editar
+                                        </Button>
+                                        <Button
+                                            onClick={() => eliminarPlaylist(index)}
+                                            variant="outline"
+                                            size="sm"
+                                            className="text-xs flex-1 sm:flex-none border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700"
+                                        >
+                                            Eliminar
+                                        </Button>
+                                    </>
+                                )}
                             </div>
                         </div>
-                    ))}
+                        )
+                    })}
                 </div>
             )}
 

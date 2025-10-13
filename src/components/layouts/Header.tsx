@@ -87,10 +87,10 @@ export default function Header({ onLogout }: HeaderProps) {
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-600"
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? <X className="h-6 w-6 text-slate-800 dark:text-slate-200" /> : <Menu className="h-6 w-6 text-slate-800 dark:text-slate-200" />}
           </button>
         </div>
 

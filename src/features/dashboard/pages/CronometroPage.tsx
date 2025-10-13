@@ -12,7 +12,7 @@ import {
 } from "@/lib/rutinas"
 import ConfigForm from "../components/ConfigForm"
 import PlaylistForm from "../../upload-file/components/PlaylistForm"
-import MusicPlayer from "../../upload-file/components/MusicPlayer"
+import EnhancedMusicPlayer from "../../upload-file/components/EnhancedMusicPlayer"
 import { FaseRutina } from "../types"
 import { Playlist } from "../../upload-file/types"
 import Modal from "@/components/ui/Modal"
@@ -127,13 +127,8 @@ export default function CronometroPage() {
 
             {/* Columna derecha: Playlist */}
             {playlistActiva && (
-                  <div className="rounded-lg shadow-md p-4 sm:p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
-                <div>
-                      <h2 className="text-lg sm:text-xl font-semibold mb-2 text-slate-800 dark:text-slate-100">
-                        🎶 Playlist activa: {playlistActiva.nombre}
-                      </h2>
-                  <MusicPlayer playlist={playlistActiva} autoPlay />
-                </div>
+                  <div className="rounded-lg shadow-md p-4 sm:p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <EnhancedMusicPlayer playlist={playlistActiva} />
               </div>
             )}
           </div>
