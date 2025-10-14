@@ -7,9 +7,6 @@
   "background_color": "#ffffff",
   "theme_color": "#3B82F6",
   "orientation": "portrait-primary",
-  "scope": "/",
-  "lang": "es",
-  "categories": ["fitness", "health", "lifestyle"],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
@@ -60,46 +57,7 @@
       "purpose": "maskable any"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshots/desktop-1.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Vista del cronómetro de entrenamiento"
-    },
-    {
-      "src": "/screenshots/mobile-1.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Vista móvil del cronómetro"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Cronómetro",
-      "short_name": "Cronómetro",
-      "description": "Iniciar cronómetro de entrenamiento",
-      "url": "/cronometro",
-      "icons": [
-        {
-          "src": "/icons/icon-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Calendario",
-      "short_name": "Calendario",
-      "description": "Ver calendario de entrenamientos",
-      "url": "/calendario",
-      "icons": [
-        {
-          "src": "/icons/icon-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
-    }
-  ]
+  "categories": ["fitness", "health", "lifestyle"],
+  "lang": "es",
+  "dir": "ltr"
 }
