@@ -1,7 +1,8 @@
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { FaseRutina } from "../types"
 import CircularTimer from "./CircularTimer"
+import { Settings, SkipForward, Eye, EyeOff } from "lucide-react"
 
 interface CronometroProps {
     fases: FaseRutina[]
@@ -18,23 +19,90 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
     const [tiempoTotal, setTiempoTotal] = useState(fases[0].preparacion)
     const [activo, setActivo] = useState(false)
     const [startTime, setStartTime] = useState(0)
+    const [esNuevaSerie, setEsNuevaSerie] = useState(false) // ✅ Flag para nueva serie
+    
+    // 🔊 Configuración de audio
+    const [audioConfig, setAudioConfig] = useState({
+        countdown: true,           // "3, 2, 1, ya"
+        exerciseName: true,        // "Jumping Jacks"
+        phaseTransition: true,     // "Siguiente fase: Pecho"
+        motivational: true,        // "¡Excelente trabajo!"
+        restReminder: true,        // "Tiempo de descanso"
+        volume: 0.8,              // Volumen del audio
+    })
+
+    // ⚙️ Configuración de controles
+    const [configuracion, setConfiguracion] = useState({
+        autoPlay: true,           // Auto-iniciar siguiente ejercicio
+        skipRest: false,          // Saltar descansos
+        customRest: 15,           // Tiempo personalizado de descanso
+        showNextExercise: true,   // Mostrar siguiente ejercicio
+        fullScreen: false,        // Modo pantalla completa
+        showAudioControls: false, // Mostrar controles de audio
+    })
 
     const fase = fases[faseIndex]
 
-    // 🔊 Cuenta regresiva en audio
+    // 🔊 Función para hablar con configuración
+    const speak = useCallback((text: string, priority: 'high' | 'normal' = 'normal') => {
+        if (!audioConfig.volume) return
+        
+        const utter = new SpeechSynthesisUtterance(text)
+        utter.volume = audioConfig.volume
+        utter.rate = 0.9
+        utter.pitch = 1.0
+        utter.lang = 'es-ES'
+        
+        // Cancelar mensajes anteriores si es de alta prioridad
+        if (priority === 'high') {
+            speechSynthesis.cancel()
+        }
+        
+        speechSynthesis.speak(utter)
+    }, [audioConfig.volume])
+
+    // 🔊 Cuenta regresiva en audio mejorada
     useEffect(() => {
-        if (!activo) return
+        if (!activo || !audioConfig.countdown) return
+        
         if (tiempo <= 3 && tiempo > 0) {
-            const utter = new SpeechSynthesisUtterance(
-                tiempo === 3 ? "tres" : tiempo === 2 ? "dos" : "uno"
-            )
-            speechSynthesis.speak(utter)
+            const mensaje = tiempo === 3 ? "tres" : tiempo === 2 ? "dos" : "uno"
+            speak(mensaje, 'high')
         }
         if (tiempo === 0 && activo) {
-            const utter = new SpeechSynthesisUtterance("ya")
-            speechSynthesis.speak(utter)
+            speak("¡ya!", 'high')
         }
-    }, [tiempo, activo])
+    }, [tiempo, activo, audioConfig.countdown, audioConfig.volume, speak])
+
+    // 🔊 Anunciar nombre del ejercicio
+    useEffect(() => {
+        if (!activo || !audioConfig.exerciseName || estado !== "ejercicio") return
+        
+        const ejercicio = fase.ejercicios[ejercicioActual]
+        if (ejercicio && tiempo === fase.repeticiones) {
+            setTimeout(() => {
+                speak(`Ejercicio: ${ejercicio.nombre}`, 'normal')
+            }, 1000)
+        }
+    }, [estado, ejercicioActual, fase, activo, audioConfig.exerciseName, audioConfig.volume, speak, tiempo])
+
+    // 🔊 Anunciar transiciones de fase
+    useEffect(() => {
+        if (!activo || !audioConfig.phaseTransition) return
+        
+        if (estado === "preparacion" && tiempo === fase.preparacion) {
+            speak(`Fase: ${fase.nombre}`, 'normal')
+        }
+    }, [estado, fase, activo, audioConfig.phaseTransition, audioConfig.volume, speak, tiempo])
+
+    // 🔊 Recordatorios de descanso
+    useEffect(() => {
+        if (!activo || !audioConfig.restReminder || estado !== "descanso") return
+        
+        if (tiempo === fase.descanso) {
+            speak("Tiempo de descanso", 'normal')
+        }
+    }, [estado, fase, activo, audioConfig.restReminder, audioConfig.volume, speak, tiempo])
 
     // ⏱️ Lógica del cronómetro
     useEffect(() => {
@@ -49,18 +117,37 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
             } else if (estado === "ejercicio") {
                 if (ejercicioActual < fase.ejercicios.length - 1) {
                     // Pasar al siguiente ejercicio en la misma serie
-                    setEstado("descanso")
-                    setTiempo(fase.descanso)
-                    setTiempoTotal(fase.descanso)
+                    if (configuracion.skipRest) {
+                        // Saltar descanso si está habilitado
+                        setEjercicioActual(ejercicioActual + 1)
+                        setTiempo(fase.repeticiones)
+                        setTiempoTotal(fase.repeticiones)
+                        setEsNuevaSerie(false)
+                    } else {
+                        setEstado("descanso")
+                        setTiempo(configuracion.customRest || fase.descanso)
+                        setTiempoTotal(configuracion.customRest || fase.descanso)
+                        setEsNuevaSerie(false) // No es nueva serie
+                    }
                 } else {
                     // Terminó el último ejercicio de la serie, verificar si hay más series
                     if (serieActual < fase.series) {
                         // Pasar a la siguiente serie
                         setSerieActual(serieActual + 1)
                         setEjercicioActual(0) // ✅ Resetear a ejercicio 1
-                        setTiempo(fase.descanso)
-                        setTiempoTotal(fase.descanso)
-                        setEstado("descanso")
+                        
+                        if (configuracion.skipRest) {
+                            // Saltar descanso entre series
+                            setTiempo(fase.repeticiones)
+                            setTiempoTotal(fase.repeticiones)
+                            setEstado("ejercicio")
+                            setEsNuevaSerie(false)
+                        } else {
+                            setTiempo(configuracion.customRest || fase.descanso)
+                            setTiempoTotal(configuracion.customRest || fase.descanso)
+                            setEstado("descanso")
+                            setEsNuevaSerie(true) // ✅ Marcar como nueva serie
+                        }
                     } else {
                         // Terminó la fase, verificar si hay más fases
                         if (faseIndex < fases.length - 1) {
@@ -70,6 +157,7 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
                             setTiempo(fases[faseIndex + 1].preparacion)
                             setTiempoTotal(fases[faseIndex + 1].preparacion)
                             setEstado("preparacion")
+                            setEsNuevaSerie(false)
                         } else {
                             // 🎉 ¡Terminó toda la rutina!
                             setActivo(false)
@@ -83,17 +171,17 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
                 setTiempo(fase.repeticiones)
                 setTiempoTotal(fase.repeticiones)
                 
-                // ✅ Solo incrementar ejercicio si NO es el primer ejercicio de una nueva serie
-                // Si ejercicioActual es 0, significa que acabamos de empezar una nueva serie
-                if (ejercicioActual > 0 && ejercicioActual < fase.ejercicios.length - 1) {
+                // ✅ Solo incrementar ejercicio si NO es una nueva serie
+                if (!esNuevaSerie && ejercicioActual < fase.ejercicios.length - 1) {
                     setEjercicioActual(ejercicioActual + 1)
                 }
+                setEsNuevaSerie(false) // Resetear el flag
             }
         } else {
             const timer = setTimeout(() => setTiempo(tiempo - 1), 1000)
             return () => clearTimeout(timer)
         }
-    }, [tiempo, activo, estado, faseIndex, serieActual, ejercicioActual, fase, fases, onFinish, startTime])
+    }, [tiempo, activo, estado, faseIndex, serieActual, ejercicioActual, fase, fases, onFinish, startTime, esNuevaSerie, configuracion.customRest, configuracion.skipRest])
 
     const toggleTimer = () => {
         if (!activo) {
@@ -110,6 +198,7 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
         setEstado("preparacion")
         setTiempo(fases[0].preparacion)
         setTiempoTotal(fases[0].preparacion)
+        setEsNuevaSerie(false) // ✅ Resetear el flag
     }
 
     const progreso = useMemo(() => {
@@ -166,6 +255,104 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
                     <div className="mt-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                         Serie {serieActual} de {fase.series} | Ejercicio {ejercicioActual + 1} de {fase.ejercicios.length}
                     </div>
+                </div>
+            )}
+
+            {/* Controles de configuración */}
+            <div className="flex flex-wrap justify-center gap-2 mb-4">
+                <Button
+                    onClick={() => setConfiguracion(prev => ({ ...prev, showAudioControls: !prev.showAudioControls }))}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs"
+                >
+                    <Settings className="h-3 w-3 mr-1" />
+                    Audio
+                </Button>
+                <Button
+                    onClick={() => setConfiguracion(prev => ({ ...prev, skipRest: !prev.skipRest }))}
+                    variant={configuracion.skipRest ? "default" : "outline"}
+                    size="sm"
+                    className="text-xs"
+                >
+                    <SkipForward className="h-3 w-3 mr-1" />
+                    Sin Descanso
+                </Button>
+                <Button
+                    onClick={() => setConfiguracion(prev => ({ ...prev, showNextExercise: !prev.showNextExercise }))}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs"
+                >
+                    {configuracion.showNextExercise ? <Eye className="h-3 w-3 mr-1" /> : <EyeOff className="h-3 w-3 mr-1" />}
+                    Siguiente
+                </Button>
+            </div>
+
+            {/* Panel de controles de audio */}
+            {configuracion.showAudioControls && (
+                <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-3 mb-4">
+                    <h4 className="text-sm font-semibold mb-2 text-slate-800 dark:text-slate-100">🔊 Configuración de Audio</h4>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                        <label className="flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                checked={audioConfig.countdown}
+                                onChange={(e) => setAudioConfig(prev => ({ ...prev, countdown: e.target.checked }))}
+                                className="rounded"
+                            />
+                            <span>Cuenta regresiva</span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                checked={audioConfig.exerciseName}
+                                onChange={(e) => setAudioConfig(prev => ({ ...prev, exerciseName: e.target.checked }))}
+                                className="rounded"
+                            />
+                            <span>Nombre ejercicio</span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                checked={audioConfig.phaseTransition}
+                                onChange={(e) => setAudioConfig(prev => ({ ...prev, phaseTransition: e.target.checked }))}
+                                className="rounded"
+                            />
+                            <span>Transición fase</span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                            <input
+                                type="checkbox"
+                                checked={audioConfig.restReminder}
+                                onChange={(e) => setAudioConfig(prev => ({ ...prev, restReminder: e.target.checked }))}
+                                className="rounded"
+                            />
+                            <span>Recordatorio descanso</span>
+                        </label>
+                    </div>
+                    <div className="mt-2">
+                        <label className="text-xs text-slate-600 dark:text-slate-400">Volumen: {Math.round(audioConfig.volume * 100)}%</label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                            value={audioConfig.volume}
+                            onChange={(e) => setAudioConfig(prev => ({ ...prev, volume: parseFloat(e.target.value) }))}
+                            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                    </div>
+                </div>
+            )}
+
+            {/* Información del siguiente ejercicio */}
+            {configuracion.showNextExercise && estado === "ejercicio" && ejercicioActual < fase.ejercicios.length - 1 && (
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 mb-4">
+                    <h4 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-1">⏭️ Siguiente ejercicio:</h4>
+                    <p className="text-sm text-blue-700 dark:text-blue-300">
+                        {fase.ejercicios[ejercicioActual + 1].numeroEjercicio}. {fase.ejercicios[ejercicioActual + 1].nombre}
+                    </p>
                 </div>
             )}
 
