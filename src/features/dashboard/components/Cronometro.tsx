@@ -48,14 +48,16 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
                 setTiempoTotal(fase.repeticiones)
             } else if (estado === "ejercicio") {
                 if (ejercicioActual < fase.ejercicios.length - 1) {
+                    // Pasar al siguiente ejercicio en la misma serie
                     setEstado("descanso")
                     setTiempo(fase.descanso)
                     setTiempoTotal(fase.descanso)
                 } else {
-                    // Terminó el ejercicio, verificar si hay más series
+                    // Terminó el último ejercicio de la serie, verificar si hay más series
                     if (serieActual < fase.series) {
+                        // Pasar a la siguiente serie
                         setSerieActual(serieActual + 1)
-                        setEjercicioActual(0)
+                        setEjercicioActual(0) // ✅ Resetear a ejercicio 1
                         setTiempo(fase.descanso)
                         setTiempoTotal(fase.descanso)
                         setEstado("descanso")
@@ -80,7 +82,10 @@ export default function Cronometro({ fases, onVolver, onFinish }: CronometroProp
                 setEstado("ejercicio")
                 setTiempo(fase.repeticiones)
                 setTiempoTotal(fase.repeticiones)
-                if (ejercicioActual < fase.ejercicios.length - 1) {
+                
+                // ✅ Solo incrementar ejercicio si NO es el primer ejercicio de una nueva serie
+                // Si ejercicioActual es 0, significa que acabamos de empezar una nueva serie
+                if (ejercicioActual > 0 && ejercicioActual < fase.ejercicios.length - 1) {
                     setEjercicioActual(ejercicioActual + 1)
                 }
             }
