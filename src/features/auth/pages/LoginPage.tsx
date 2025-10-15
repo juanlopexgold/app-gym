@@ -33,7 +33,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
     <div 
       className="min-h-screen flex items-center justify-center p-4 relative"
       style={{
-        backgroundImage: "url('/images/login-bg3.jpg')",
+        backgroundImage: "url('/images/login-bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat"
